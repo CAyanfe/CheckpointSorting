@@ -1,90 +1,67 @@
-//PROBLEM 1
+/* 
+Insertion sort is a simple sorting algorithm that works the way we sort playing cards in our hands. 
+Each time we take a new card we put it in the right place in our hand. 
 
-function sumOfDistinctElements(set1, set2) {
-  // Initialize sum
-  let sumResult = 0;
+- Each time work only with the first i-1 element from of the array
+- Pick element arr[i] and insert it into sorted sequence in the array from 0 to i-1.
 
-  // Compare elements of set1 with set2 and add distinct elements to sum
-  for (let i = 0; i < set1.length; i++) {
-    let foundInSet2 = false;
-    for (let j = 0; j < set2.length; j++) {
-      if (set1[i] === set2[j]) {
-        foundInSet2 = true;
-        break;
-      }
+*/
+
+/*
+STEPS:
+ Start with the second element in the array (index 1), considering it as the current element to be inserted into the sorted subarray.
+Compare the current element with the elements in the sorted subarray (from index 0 to i-1), moving elements greater than the current element one position to the right.
+Insert the current element into its correct position in the sorted subarray.
+Repeat steps 1-3 until all elements in the array are part of the sorted subarray.
+
+
+Example:
+Let's sort the following array using insertion sort: [5, 2, 9, 1, 5, 6]
+
+Start with the second element (index 1) 2.
+
+Compare 2 with the first element 5, and since 2 is smaller, move 5 one position to the right.
+The array becomes: [2, 5, 9, 1, 5, 6].
+Consider the third element (index 2) 9.
+
+Compare 9 with 5 and 2, and since 9 is greater, it remains in its position.
+Consider the fourth element (index 3) 1.
+
+Compare 1 with 9, 5, and 2. Move 9, 5, and 2 one position to the right to make space for 1.
+The array becomes: [1, 2, 5, 9, 5, 6].
+Consider the fifth element (index 4) 5.
+
+Compare 5 with 9 and 5. Move 9 one position to the right to make space for 5.
+The array becomes: [1, 2, 5, 5, 9, 6].
+Consider the sixth element (index 5) 6.
+
+Compare 6 with 9. Move 9 one position to the right to make space for 6.
+The array becomes: [1, 2, 5, 5, 6, 9].
+Now, the array is sorted in ascending order: [1, 2, 5, 5, 6, 9].
+ */
+
+// CODE
+function insertionSort(arr) {
+  const n = arr.length;
+
+  for (let i = 1; i < n; i++) {
+    let currentElement = arr[i];
+    let j = i - 1;
+
+    // Move elements greater than the current element to the right
+    while (j >= 0 && arr[j] > currentElement) {
+      arr[j + 1] = arr[j];
+      j--;
     }
-    if (!foundInSet2) {
-      sumResult += set1[i];
-    }
+
+    // Insert the current element at the correct position
+    arr[j + 1] = currentElement;
   }
 
-  // Compare elements of set2 with set1 and add distinct elements to sum
-  for (let i = 0; i < set2.length; i++) {
-    let foundInSet1 = false;
-    for (let j = 0; j < set1.length; j++) {
-      if (set2[i] === set1[j]) {
-        foundInSet1 = true;
-        break;
-      }
-    }
-    if (!foundInSet1) {
-      sumResult += set2[i];
-    }
-  }
-
-  return sumResult;
+  return arr;
 }
 
-// Example usage
-const set1 = [3, 1, 7, 9];
-const set2 = [2, 4, 1, 9, 3];
-const result = sumOfDistinctElements(set1, set2);
-console.log("Output:", result); // Output: 13 (distinct elements 4, 7, 2)
-
-//PROBLEM 2
-
-function dot_product(v1, v2) {
-  if (v1.length !== v2.length) {
-    throw new Error("Vectors must have the same length.");
-  }
-
-  let product = 0;
-  for (let i = 0; i < v1.length; i++) {
-    product += v1[i] * v2[i];
-  }
-  return product;
-}
-
-function areVectorsOrthogonal(vectors) {
-  // Check if the vectors array contains an even number of vectors
-  if (vectors.length % 2 !== 0) {
-    throw new Error(
-      "The vectors array must contain an even number of vectors."
-    );
-  }
-
-  const n = vectors.length / 2;
-  const orthogonalPairs = [];
-
-  for (let i = 0; i < n; i++) {
-    const v1 = vectors[i];
-    const v2 = vectors[i + n];
-
-    if (dot_product(v1, v2) === 0) {
-      orthogonalPairs.push([v1, v2]);
-    }
-  }
-
-  return orthogonalPairs;
-}
-
-// Example usage
-const vectors = [
-  [1, 2, -1],
-  [3, 0, -2],
-  [2, 2, 1],
-  [0, -2, 3],
-];
-
-const orthogonalPairs = areVectorsOrthogonal(vectors);
-console.log("Orthogonal Pairs:", orthogonalPairs);
+// Example usage:
+const unsortedArray = [5, 2, 9, 1, 5, 6];
+const sortedArray = insertionSort(unsortedArray);
+console.log(sortedArray); // Output: [1, 2, 5, 5, 6, 9]
